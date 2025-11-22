@@ -1,4 +1,4 @@
-package com.analytics.producer.congif;
+package com.analytics.producer.config;
 
 import com.analytics.producer.filter.JwtFilter;
 import org.springframework.context.annotation.Bean;
