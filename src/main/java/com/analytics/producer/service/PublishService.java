@@ -2,6 +2,7 @@ package com.analytics.producer.service;
 
 import com.analytics.producer.dto.AnalyticsEventRequest;
 import com.analytics.producer.kafka.KafkaPublisher;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -9,17 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class PublishService {
-
 
     private final KafkaPublisher kafkaPublisher;
 
     @Value("${kafka.topic}")
     private  String TOPIC;
-
-    public PublishService(KafkaPublisher kafkaPublisher) {
-        this.kafkaPublisher = kafkaPublisher;
-    }
 
     public void publishEvent(String appId, AnalyticsEventRequest analyticsEventRequest) {
         Map<String,Object> map = new HashMap<>();

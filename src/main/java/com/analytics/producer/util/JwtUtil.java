@@ -12,7 +12,6 @@ import java.security.Key;
 @Component
 public class JwtUtil {
 
-
     private final Key key;
 
     public JwtUtil(@Value("${secret.key}") String secret) {
