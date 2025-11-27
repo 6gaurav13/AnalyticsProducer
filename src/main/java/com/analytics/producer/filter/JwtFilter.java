@@ -9,10 +9,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +33,12 @@ public class JwtFilter extends OncePerRequestFilter {
                 Jws<Claims> claims = jwtService.parseJwt(jwt);
                 String appId = claims.getBody().get("appId", String.class);
                 request.setAttribute("appId", appId); //for later use so we don;t need to send appId in request it is directly from jwt token
-            return;
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(
+                                claims.getBody().getSubject(), null, new ArrayList<>()
+                        );
+
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }catch (Exception e){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
