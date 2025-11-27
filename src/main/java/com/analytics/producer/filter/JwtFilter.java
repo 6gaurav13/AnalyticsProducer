@@ -32,6 +32,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 String jwt = token.substring(7);
                 Jws<Claims> claims = jwtService.parseJwt(jwt);
                 String appId = claims.getBody().get("appId", String.class);
+                Integer tokenVersion = claims.getBody().get("app_token_version", Integer.class);
+                if(!jwtService.validateToken(appId, tokenVersion)){
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
                 request.setAttribute("appId", appId); //for later use so we don;t need to send appId in request it is directly from jwt token
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
