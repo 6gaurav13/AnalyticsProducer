@@ -32,7 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 String jwt = token.substring(7);
                 Jws<Claims> claims = jwtService.parseJwt(jwt);
                 String appId = claims.getBody().get("appId", String.class);
-                Integer tokenVersion = claims.getBody().get("app_token_version", Integer.class);
+                Integer tokenVersion = claims.getBody().get("token_version", Integer.class);
                 if(!jwtService.validateToken(appId, tokenVersion)){
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
